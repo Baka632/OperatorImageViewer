@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OperatorImageViewer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "OperatorImageViewer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
