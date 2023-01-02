@@ -124,14 +124,14 @@ namespace OperatorImageViewer.ViewModels
 
             try
             {
-                Stopwatch stopwatch= Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 byte[] image = await OperatorResourceHelper.GetOperatorIllustrationAsync(new OperatorIllustrationInfo(string.Empty, string.Empty, operatorCodeName, CurrentOperatorType, string.Empty));
                 InMemoryRandomAccessStream stream = new();
                 await stream.WriteAsync(image.AsBuffer());
                 stream.Seek(0);
                 await OperatorImage.SetSourceAsync(stream);
                 stopwatch.Stop();
-                SetInfoBar(true, "报告", $"花费时间:{stopwatch.Elapsed}", InfoBarSeverity.Informational);
+                SetInfoBar(true, "报告", $@"花费时间:{stopwatch.Elapsed:s\.ff}秒", InfoBarSeverity.Informational);
             }
             catch (ArgumentException)
             {
