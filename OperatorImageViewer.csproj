@@ -27,9 +27,6 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Views\SpineViewer.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -58,10 +55,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Spine\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SpineViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 </Project>
