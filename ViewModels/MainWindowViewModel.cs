@@ -2,7 +2,6 @@
 using ArknightsResources.Utility;
 using OperatorImageViewer.Models;
 using Windows.Storage.Streams;
-using OperatorRes = ArknightsResources.Operators.Resources.Properties;
 
 namespace OperatorImageViewer.ViewModels
 {
@@ -14,14 +13,14 @@ namespace OperatorImageViewer.ViewModels
         //Key:Operator codename; Value:Skin Codename List
         public readonly Dictionary<string, IList<string>> OperatorSkinCodenameMapping;
 
+        private readonly OperatorResourceHelper operatorResourceHelper = new(OperatorRes.ResourceManager);
+
         public MainWindowViewModel()
         {
-            OperatorResourceHelper.ResourceManager = OperatorRes.Resources.ResourceManager;
-
-            OperatorImageMapping = OperatorResourceHelper.GetOperatorCodenameMapping(AvailableCultureInfos.ChineseSimplifiedCultureInfo)
+            OperatorImageMapping = operatorResourceHelper.GetOperatorCodenameMapping(AvailableCultureInfos.ChineseSimplifiedCultureInfo)
                 ?? new(0);
 
-            StringReader stringReader = new(OperatorRes.Resources.operator_skin_codename);
+            StringReader stringReader = new(OperatorRes.operator_skin_codename);
             OperatorSkinCodenameMapping = new Dictionary<string, IList<string>>(150);
             for (; stringReader.Peek() != -1;)
             {
@@ -125,7 +124,7 @@ namespace OperatorImageViewer.ViewModels
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                byte[] image = await OperatorResourceHelper.GetOperatorIllustrationAsync(new OperatorIllustrationInfo(string.Empty, string.Empty, operatorCodeName, CurrentOperatorType, string.Empty));
+                byte[] image = await operatorResourceHelper.GetOperatorIllustrationAsync(new OperatorIllustrationInfo(string.Empty, string.Empty, operatorCodeName, CurrentOperatorType, string.Empty));
                 InMemoryRandomAccessStream stream = new();
                 await stream.WriteAsync(image.AsBuffer());
                 stream.Seek(0);
