@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using ArknightsResources.Utility;
 using OperatorImageViewer.Models;
 using Windows.Storage.Streams;
@@ -8,40 +9,19 @@ namespace OperatorImageViewer.ViewModels
     public partial class MainWindowViewModel : ObservableObject
     {
         //Key:Image codename; Value:Name
-        public readonly Dictionary<string, string> OperatorImageMapping;
+        public readonly ImmutableDictionary<string, string> OperatorImageMapping;
 
         //Key:Operator codename; Value:Skin Codename List
-        public readonly Dictionary<string, IList<string>> OperatorSkinCodenameMapping;
+        public readonly ImmutableDictionary<string, string[]> OperatorSkinCodenameMapping;
 
-        private readonly OperatorResourceHelper operatorResourceHelper = new(OperatorRes.ResourceManager);
+        private readonly OperatorIllustResourceHelper operatorIllustResourceHelper = new(OperatorIllustRes.ResourceManager);
 
         public MainWindowViewModel()
         {
-            OperatorImageMapping = operatorResourceHelper.GetOperatorCodenameMapping(AvailableCultureInfos.ChineseSimplifiedCultureInfo)
-                ?? new(0);
-
-            StringReader stringReader = new(OperatorRes.operator_skin_codename);
-            OperatorSkinCodenameMapping = new Dictionary<string, IList<string>>(150);
-            for (; stringReader.Peek() != -1;)
-            {
-                string line = stringReader.ReadLine()!;
-                if (line.StartsWith('['))
-                {
-                    continue;
-                }
-
-                string[] val = line.Split('_');
-                if (!OperatorSkinCodenameMapping.ContainsKey(val[0]))
-                {
-                    OperatorSkinCodenameMapping[val[0]] = new List<string>(5) { val[1] };
-                }
-                else
-                {
-                    OperatorSkinCodenameMapping[val[0]].Add(val[1]);
-                }
-                
-            }
-
+            OperatorTextResourceHelper textResourceHelper = new(OperatorTextRes.ResourceManager);
+            OperatorImageMapping = textResourceHelper.GetOperatorCodenameMapping(AvailableCultureInfos.ChineseSimplifiedCultureInfo)
+                ?? new Dictionary<string, string>(0).ToImmutableDictionary();
+            OperatorSkinCodenameMapping = textResourceHelper.GetOperatorSkinMapping();
         }
 
         [ObservableProperty]
@@ -124,7 +104,7 @@ namespace OperatorImageViewer.ViewModels
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                byte[] image = await operatorResourceHelper.GetOperatorIllustrationAsync(new OperatorIllustrationInfo(string.Empty, string.Empty, operatorCodeName, CurrentOperatorType, string.Empty));
+                byte[] image = await operatorIllustResourceHelper.GetOperatorIllustrationAsync(new OperatorIllustrationInfo(string.Empty, string.Empty, operatorCodeName, CurrentOperatorType, string.Empty));
                 InMemoryRandomAccessStream stream = new();
                 await stream.WriteAsync(image.AsBuffer());
                 stream.Seek(0);
