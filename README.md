@@ -8,5 +8,8 @@
 * [ArknightsResources/OperatorsIllustResources](https://github.com/ArknightsResources/OperatorsIllustResources) (提供立绘资源的库)
 * [ArknightsResources/Utility](https://github.com/ArknightsResources/Utility) (读取立绘资源的库)
 
+## 另请参阅
+[Operator Voice Listener](https://github.com/Baka632/OperatorVoiceListener)
+
 ## 许可
 MIT 许可证
