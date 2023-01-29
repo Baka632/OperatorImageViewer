@@ -37,10 +37,10 @@ namespace OperatorImageViewer.ViewModels
         private bool isLoadingImage;
 
         [ObservableProperty]
-        private string infoBarMessage;
+        private string infoBarMessage = string.Empty;
 
         [ObservableProperty]
-        private string infoBarTitle;
+        private string infoBarTitle = string.Empty;
 
         [ObservableProperty]
         private bool infoBarOpen;
@@ -49,7 +49,7 @@ namespace OperatorImageViewer.ViewModels
         private InfoBarSeverity infoBarSeverity;
 
         [ObservableProperty]
-        private string skinCodename;
+        private string skinCodename = string.Empty;
 
         public List<OperatorType> OperatorTypes { get; } = new()
         {
@@ -58,6 +58,7 @@ namespace OperatorImageViewer.ViewModels
             OperatorType.Elite2,
             OperatorType.Skin
         };
+        private IEnumerable<OperatorCodenameInfo>? AllOperatorCodenameInfos;
 
         public async Task SetOperatorImageAsync(OperatorCodenameInfo chosenSuggestion)
         {
@@ -90,7 +91,7 @@ namespace OperatorImageViewer.ViewModels
                 case OperatorType.Skin:
                     if (string.IsNullOrWhiteSpace(skinCodename))
                     {
-                        SetInfoBar(true,"注意","请输入皮肤代号",InfoBarSeverity.Warning);
+                        SetInfoBar(true, "注意", "请输入皮肤代号", InfoBarSeverity.Warning);
                         IsLoadingImage = false;
                         return;
                     }
@@ -143,9 +144,26 @@ namespace OperatorImageViewer.ViewModels
             InfoBarSeverity = InfoBarSeverity.Informational;
         }
 
-        public IList<OperatorCodenameInfo> FindOperatorCodename(string text)
+        public IEnumerable<OperatorCodenameInfo> FindOperatorCodename(string text)
         {
-            List<OperatorCodenameInfo> target = new(20);
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                if (AllOperatorCodenameInfos is null)
+                {
+                    List<OperatorCodenameInfo> list = new(OperatorImageMapping.Count);
+                    list.AddRange(from item in OperatorImageMapping
+                                          select new OperatorCodenameInfo(item.Key, item.Value));
+                    list.Sort();
+                    AllOperatorCodenameInfos = list;
+                    return list;
+                }
+                else
+                {
+                    return AllOperatorCodenameInfos;
+                }
+            }
+
+            List<OperatorCodenameInfo> target = new(30);
             foreach (var item in OperatorImageMapping)
             {
                 if (useCodename == true)
@@ -163,6 +181,8 @@ namespace OperatorImageViewer.ViewModels
                     }
                 }
             }
+
+            target.Sort();
 
             return target;
         }
@@ -184,7 +204,7 @@ namespace OperatorImageViewer.ViewModels
                     {
                         foreach (var val in item.Value)
                         {
-                            target.Add(val);
+                            target.Add(val.Split('_')[1]);
                         }
                     }
                 }
@@ -215,6 +235,8 @@ namespace OperatorImageViewer.ViewModels
                     }
                 }
             }
+
+            target.Sort();
 
             return target;
         }

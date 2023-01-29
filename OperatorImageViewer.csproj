@@ -13,7 +13,7 @@
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <PackageCertificateThumbprint>70211FC3C97E403131B9A07F4D5F11FB3C59A2A4</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <Nullable>warnings</Nullable>
+    <Nullable>enable</Nullable>
     <SignAssembly>False</SignAssembly>
     <Authors>Baka632</Authors>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>

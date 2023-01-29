@@ -31,6 +31,6 @@ namespace OperatorImageViewer
             m_window.ExtendsContentIntoTitleBar = true;
         }
 
-        private Window m_window;
+        private Window? m_window;
     }
 }

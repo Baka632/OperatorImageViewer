@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿#nullable disable
+
+using System.Runtime.InteropServices;
 using WinRT;
 using Microsoft.UI.Composition.SystemBackdrops;
 using OperatorImageViewer.Models;
@@ -64,21 +66,11 @@ namespace OperatorImageViewer.View
             }
         }
 
-        private async void OnSkinAutoSuggestBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void OnSkinAutoSuggestBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is string skinText)
             {
                 ViewModel.SkinCodename = skinText;
-            }
-
-            if (ViewModel.UseCodename != true)
-            {
-                string text = (from pair in ViewModel.OperatorImageMapping where pair.Value == AutoSuggestBox.Text select pair.Key).FirstOrDefault();
-                await ViewModel.SetOperatorImageAsync(text);
-            }
-            else
-            {
-                await ViewModel.SetOperatorImageAsync(AutoSuggestBox.Text);
             }
         }
 
@@ -145,7 +137,10 @@ namespace OperatorImageViewer.View
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            m_configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
+            if (m_configurationSource is not null)
+            {
+                m_configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
+            }
         }
 
         private void Window_Closed(object sender, WindowEventArgs args)
