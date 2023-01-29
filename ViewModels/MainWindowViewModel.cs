@@ -31,7 +31,7 @@ namespace OperatorImageViewer.ViewModels
         private OperatorType currentOperatorType;
 
         [ObservableProperty]
-        private bool? useCodename = true;
+        private bool useCodename = true;
 
         [ObservableProperty]
         private bool isLoadingImage;
