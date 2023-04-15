@@ -89,13 +89,13 @@ namespace OperatorImageViewer.ViewModels
                     operatorCodeName = $"{queryText}_2";
                     break;
                 case OperatorType.Skin:
-                    if (string.IsNullOrWhiteSpace(skinCodename))
+                    if (string.IsNullOrWhiteSpace(SkinCodename))
                     {
                         SetInfoBar(true, "注意", "请输入皮肤代号", InfoBarSeverity.Warning);
                         IsLoadingImage = false;
                         return;
                     }
-                    operatorCodeName = $"{queryText}_{skinCodename}";
+                    operatorCodeName = $"{queryText}_{SkinCodename}";
                     break;
                 default:
                     operatorCodeName = queryText;
@@ -166,7 +166,7 @@ namespace OperatorImageViewer.ViewModels
             List<OperatorCodenameInfo> target = new(30);
             foreach (var item in OperatorImageMapping)
             {
-                if (useCodename == true)
+                if (UseCodename == true)
                 {
                     if (item.Key.FirstOrDefault() == text.FirstOrDefault() && item.Key.Contains(text))
                     {
@@ -198,7 +198,7 @@ namespace OperatorImageViewer.ViewModels
             List<string> target = new(5);
             foreach (var item in OperatorSkinCodenameMapping)
             {
-                if (useCodename == true)
+                if (UseCodename == true)
                 {
                     if (item.Key == opName)
                     {
